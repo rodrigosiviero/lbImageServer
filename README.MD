@@ -35,15 +35,10 @@ To run the server in standalone mode, use the following command:
 go run main.go
 ```
 
-Windows Service
-To install, remove, start, stop, restart, enable, disable, or debug the service, use the manage_service.bat script with the appropriate command:
-
-
 ### Windows Service
+To install, remove, start, stop, restart, enable, disable, or debug the service, use the manage_service.bat script with the appropriate command.
 
-To install, remove, start, stop, restart, enable, disable, or debug the service, use the manage_service.bat script with the appropriate command:
-
-# manage_service.bat
+#### manage_service.bat
 
 This batch script provides various commands to manage a service. Below are the available commands:
 
@@ -73,6 +68,23 @@ manage_service.bat debug
 manage_service.bat config 8089 C:/Launchbox
 ```
 
+#### In order to install and enable service
+
+Instead of the config command you can edit the config.json file that is on the directory as well, then just skip the config.
+
+```
+manage_service.bat install
+manage_service.bat config 8089 C:/Users/<user>/LaunchBox/Images 
+manage_service.bat enable
+```
+
+#### In order to delete
+
+```
+manage_service.bat stop
+manage_service.bat remove
+```
+
 ### Docker
 To build and run the server using Docker, use the provided Dockerfile and docker-compose.yml files.
 
@@ -84,10 +96,31 @@ docker build -t .
 
 #### Run the Docker Container
 
+Change the port if needed and change the volume with your path to the Images
+
+```Docker
+services:
+  image-server:
+    container_name: goserver
+    image: ghcr.io/rodrigosiviero/lbimageserver:latest
+    ports:
+      - "8089:8089" # You can change the port here like this "<your-port>:8089"
+    volumes:
+      - "C:/Users/<user>/LaunchBox/Images:/images" # Windows-style absolute path
+    environment:
+      - PORT=8089
+      - IMAGE_FOLDER=/images
+    restart: always
+```
+
+Run the command:
+
 ```
 docker compose up
 ```
-The server will be accessible at http://localhost:8089.
+
+
+The server will be accessible at http://localhost:your-port
 
 
 ## Development
@@ -101,4 +134,4 @@ Prerequisites
 
 To build the project, run the following command:
 
-``go build -o image_server main.go``
+```go build -o image_server main.go```
