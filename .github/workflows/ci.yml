@@ -19,7 +19,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: '1.17'
+          go-version: '1.18'
 
       - name: Set up dependencies for golang-webserver
         working-directory: golang-webserver
@@ -36,7 +36,7 @@ jobs:
         run: |
           go mod tidy
           go mod download
-          
+
       - name: Build golang-docker
         working-directory: golang-docker
         run: go build -o image_server main.go
