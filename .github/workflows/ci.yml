@@ -9,31 +9,8 @@ on:
       - main
 
 jobs:
-  build-webserver:
-    runs-on: windows-latest
-    
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: '1.18'
-
-      - name: Set up dependencies for golang-webserver
-        working-directory: golang-webserver
-        run: |
-          go mod tidy
-          go mod download
-
-      - name: Build golang-webserver
-        working-directory: golang-webserver
-        run: go build -o webserver main.go
-
   build-docker:
     runs-on: ubuntu-latest
-    needs: build-webserver
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -42,12 +19,6 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: '1.18'
-
-      - name: Set up dependencies for golang-docker
-        working-directory: golang-docker
-        run: |
-          go mod tidy
-          go mod download
 
       - name: Build golang-docker
         working-directory: golang-docker
@@ -66,3 +37,26 @@ jobs:
 
       - name: Push Docker image
         run: docker push ghcr.io/${{ github.repository }}/lb-image-server:latest
+        
+  build-webserver:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go 
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.18'
+
+      - name: Set up dependencies for golang-webserver
+        working-directory: golang-webserver
+        run: |
+          go mod tidy
+          go mod download
+
+      - name: Build golang-webserver
+        working-directory: golang-webserver
+        run: go build -o webserver main.go
+
