@@ -127,11 +127,6 @@ jobs:
           exclusions: '*.git* go.mod go.sum main.go'
           # List of excluded files / directories with recursive wildcards (only applies on Windows with `zip` type)
           type: zip
-      - name: Upload Release Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: release-zip
-          path: golang-webserver/release.zip
       - name: Create Release
         if: github.event_name == 'create' && github.event.ref_type == 'tag'
         uses: ncipollo/release-action@v1.14.0
