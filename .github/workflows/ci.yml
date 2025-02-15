@@ -1,0 +1,44 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.17'
+
+      - name: Build golang-webserver
+        working-directory: golang-webserver
+        run: go build -o webserver main.go
+
+      - name: Build golang-docker
+        working-directory: golang-docker
+        run: go build -o image_server main.go
+
+      - name: Build Docker image
+        working-directory: golang-docker
+        run: docker build -t ghcr.io/${{ github.repository }}/lb-image-server:latest .
+
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Docker image
+        run: docker push ghcr.io/${{ github.repository }}/lb-image-server:latest

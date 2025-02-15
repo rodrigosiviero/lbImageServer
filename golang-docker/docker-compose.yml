@@ -1,0 +1,12 @@
+services:
+  image-server:
+    container_name: goserver
+    build: .
+    ports:
+      - "8089:8089"
+    volumes:
+      - "C:/Users/<user>/LaunchBox/Images:/images" # Windows-style absolute path
+    environment:
+      - PORT=8089
+      - IMAGE_FOLDER=/images
+    restart: always
