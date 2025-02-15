@@ -9,9 +9,9 @@ on:
       - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
+  build-webserver:
+    runs-on: windows-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -30,6 +30,18 @@ jobs:
       - name: Build golang-webserver
         working-directory: golang-webserver
         run: go build -o webserver main.go
+
+  build-docker:
+    runs-on: ubuntu-latest
+    needs: build-webserver
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: '1.18'
 
       - name: Set up dependencies for golang-docker
         working-directory: golang-docker
