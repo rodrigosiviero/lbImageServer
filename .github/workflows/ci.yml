@@ -26,7 +26,7 @@ jobs:
 
       - name: Build Docker image
         working-directory: golang-docker
-        run: docker build -t ghcr.io/${{ github.repository }}/lb-image-server:latest .
+        run: docker build -t ghcr.io/lbimageserver/lb-image-server:latest .
 
       - name: Log in to GitHub Docker Registry
         uses: docker/login-action@v1
@@ -36,7 +36,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push Docker image
-        run: docker push ghcr.io/${{ github.repository }}/lb-image-server:latest
+        run: docker push ghcr.io/lbimageserver/lb-image-server:latest
         
   build-webserver:
     runs-on: windows-latest
