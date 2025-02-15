@@ -5,6 +5,8 @@ on:
     branches:
       - main
     tags: [ 'v*.*.*' ]
+  create:
+    tags: [ 'v*.*.*' ]
   pull_request:
     branches:
       - main
@@ -131,7 +133,7 @@ jobs:
         uses: ncipollo/release-action@v1.14.0
         with:
           # An optional set of paths representing artifacts to upload to the release. This may be a single path or a comma delimited list of paths (or globs)
-          artifact: "golang-webserver/release.zip"
+          artifacts: "golang-webserver/release.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
 
     
